@@ -3,54 +3,34 @@ import numpy as np
 import time
 
 try:
+
     jet.initStepMotorGpio()
     measures = []
     x = []
     i = 1
     jet.initSpiAdc()
-    #данная часть скрипта для получения показаний при выключенном вентиляторе
-    a = 0
-    for i in range(500):
+    x0 = -30
+    #number of steps: 536
+    for i in range(100):
         adc = jet.getAdc()
-        measures.append(adc) #затем этот массив отдельно выводим в файл "00Pa.txt"
-        a += adc    
+        measures.append(adc)
+        x.append(x0)
+        x0 += 0.6 #идем с шагом 0.6mm от -30 mm
+        jet.stepForward(11) #моторчик двигаем на 11
 
-    motorSteps = 0
-    samplesInMeasure = 50
-    count = 500
+    motorSteps = 10
+    samplesInMeasure = 100
+    count = 100
 
-    with open("/home/gr106/Desktop/Scripts/00Pa.txt", "w") as outfile:
+    with open("/home/gr106/Desktop/Scripts/X.txt", "w") as f:
+        np.savetxt(f, np.array(x)) #это массив для координат точек(ось X)
+    with open("/home/gr106/Desktop/Scripts/70.txt", "w") as outfile: #здесь каждый раз меняем название файла в засисимости от расстояния - "расстояние.txt"
         outfile.write('- Jet Lab\n\n')
         outfile.write('- Experiment date = {}\n'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))))
         outfile.write('- Number of samples in measure = {}\n'.format(samplesInMeasure))
         outfile.write('- Number of motor steps between measures = {}\n'.format(motorSteps))
         outfile.write('- Measures count = {}\n\n'.format(count))
             
-        outfile.write('- adc12bit\n')
-        np.savetxt(outfile, np.array(measures).T, fmt='%d')
-
-time.sleep(30)
-
-
-#данная часть скрипта для получения показаний при включенном вентиляторе
-    a = 0
-    measures = []
-    for i in range(500):
-        adc = jet.getAdc()
-        measures.append(adc) #затем этот массив отдельно выводим в файл "00Pa.txt"
-        a += adc    
-
-    motorSteps = 0
-    samplesInMeasure = 50
-    count = 500
-
-    with open("/home/gr106/Desktop/Scripts/00Pa.txt", "w") as outfile:
-        outfile.write('- Jet Lab\n\n')
-        outfile.write('- Experiment date = {}\n'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))))
-        outfile.write('- Number of samples in measure = {}\n'.format(samplesInMeasure))
-        outfile.write('- Number of motor steps between measures = {}\n'.format(motorSteps))
-        outfile.write('- Measures count = {}\n\n'.format(count))
-
         outfile.write('- adc12bit\n')
         np.savetxt(outfile, np.array(measures).T, fmt='%d')
 
