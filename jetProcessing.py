@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-with open(r"C:\Users\Arina\Desktop\py\X.txt", "r") as settings:
+with open("X.txt", "r") as settings:
     X = [float(i) for i in settings.read().split("\n")]
 
 
@@ -143,7 +143,7 @@ if(yy6>=0):
     y6 = y6[yy6:] + [3]*yy6
 else:
     yy6 = abs(yy6)
-    y6 = [3]*yy6 + y6[0:(99-yy6)]
+    y6 = [3]*yy6 + y6[0:(100-yy6)]
 
 yy7 = y7.index(max(y7)) - 50
 if(yy7>=0):
@@ -153,16 +153,56 @@ else:
     y7 = [3]*yy7 + y7[0:(100-yy7)]
 
 
+q0 = 0
+q1 = 0
+q2 = 0
+q3 = 0
+q4 = 0
+q5 = 0
+q6 = 0
+q7 = 0
+i = 0
+for i in range(100):
+    if(i >= 40 and i <= 57):
+        q0 += (y0[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 38 and i <= 58):
+        q1 += (y1[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 39 and i <= 67):
+        q2 += (y2[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 34 and i <= 65):
+        q3 += (y3[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 31 and i <= 69):
+        q4 += (y4[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 28 and i <= 72):
+        q5 += (y5[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 27 and i <= 73):
+        q6 += (y6[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    if(i >= 20 and i <= 73):
+        q7 += (y7[i]) * abs(X[i]) * 0.6 * 1.2 * math.pi / 1000
+    
+    i += 1
+
+
+
+print(q0)
+print(q1)
+print(q2)
+print(q3)
+print(q4)
+print(q5)
+print(q6)
+print(q7)
+
 fig, ax = plt.subplots(figsize=(16, 10), dpi = 100)
 fig.suptitle("Скорость потока воздуха в сечении затопленной струи")
-ax.plot(X, y0, lw = 1, c = "black", label = "Q (00mm) = ")
-ax.plot(X, y1, lw = 1, c = "green", label = "Q (10mm) = ")
-ax.plot(X, y2, lw = 1, c = "red", label = "Q (20mm) = ")
-ax.plot(X, y3, lw = 1, c = "brown", label = "Q (30mm) = ")
-ax.plot(X, y4, lw = 1, c = "orange", label = "Q (40mm) = ")
-ax.plot(X, y5, lw = 1, c = "cyan", label = "Q (50mm) = ")
-ax.plot(X, y6, lw = 1, c = "purple", label = "Q (60mm) = ")
-ax.plot(X, y7, lw = 1, c = "lime", label = "Q (70mm) = ")
+ax.plot(X, y0, lw = 1, c = "black", label = "Q (00mm) = {:.3f} [г/с]".format(q0))
+ax.plot(X, y1, lw = 1, c = "green", label = "Q (10mm) = {:.3f} [г/с]".format(q1))
+ax.plot(X, y2, lw = 1, c = "red", label = "Q (20mm) = {:.3f} [г/с]".format(q2))
+ax.plot(X, y3, lw = 1, c = "brown", label = "Q (30mm) = {:.3f} [г/с]".format(q3))
+ax.plot(X, y4, lw = 1, c = "orange", label = "Q (40mm) = {:.3f} [г/с]".format(q4))
+ax.plot(X, y5, lw = 1, c = "cyan", label = "Q (50mm) = {:.3f} [г/с]".format(q5))
+ax.plot(X, y6, lw = 1, c = "purple", label = "Q (60mm) = {:.3f} [г/с]".format(q6))
+ax.plot(X, y7, lw = 1, c = "lime", label = "Q (70mm) = {:.3f} [г/с]".format(q7))
 
 legend = ax.legend(loc='upper right', fontsize='medium')
 
@@ -174,8 +214,5 @@ plt.grid(True, which = "major", linestyle = "-")
 plt.minorticks_on()
 plt.grid(True, which = "minor", linestyle = "--", alpha = 1)
 #ax.axis([0, 90, 0, 3.5])
-fig.savefig("velocity-outgo-uncentered.png")
+fig.savefig("velocity-outgo-centered.png")
 plt.show()
-
-
-
